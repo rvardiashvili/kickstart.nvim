@@ -49,3 +49,51 @@ A high-performance, modular Neovim setup based on [kickstart.nvim](https://githu
 
 ---
 *Refer to [PLUGINS.md](./PLUGINS.md) for the full handbook.*
+### General
+*   `<Space>`: Leader Key
+
+### Navigation (Harpoon)
+*   `<leader>a`: Add file to Harpoon
+*   `<C-e>`: Toggle Harpoon menu
+*   `<leader>1-4`: Navigate to Harpoon file 1-4
+
+### File Explorer (Neo-tree)
+*   `<leader>e`: Toggle File Explorer
+
+### Terminal (ToggleTerm)
+*   `<C-\>`: Toggle Terminal (Floating/Docked)
+*   `<leader>tt`: Toggle Default Terminal
+*   `<leader>t1/t2/t3`: Toggle specific terminal instances
+
+### Debugging (DAP)
+*   `<F5>`: Start/Continue
+*   `<F1>`: Step Into
+*   `<F2>`: Step Over
+*   `<F3>`: Step Out
+*   `<leader>b`: Toggle Breakpoint
+
+### Git (LazyGit)
+*   `<leader>gg`: Open LazyGit
+
+### Session Management
+*   `<leader>qs`: Restore Session
+*   `<leader>ql`: Restore Last Session
+
+### Code Manipulation (TreesJ)
+*   `<leader>m`: Toggle Split/Join
+*   `<leader>j`: Join Block
+*   `<leader>s`: Split Block
+
+## ⚡ Performance Notes
+
+Most plugins are configured with `event`, `ft`, or `keys` triggers.
+*   **LSP/Treesitter**: Loads on `BufReadPre` (when you actually open a file).
+*   **Completion (Blink)**: Loads on `InsertEnter`.
+*   **Debugger**: Loads only when you press a debug key (e.g., `<F5>`).
+
+This ensures Neovim starts up almost instantly and only consumes RAM for the tools you are currently using.   
+
+## Install
+```sh
+git clone https://github.com/rvardiashvili/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+```
