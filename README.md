@@ -1,90 +1,51 @@
 # Custom Neovim Configuration
 
-This is a personalized Neovim configuration based on [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim). It has been refactored into a modular structure with a heavy focus on performance (lazy-loading) and specific language support for Python, Java, and Rust.
+A high-performance, modular Neovim setup based on [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim), tuned for Senior Software Engineering workflows.
 
 ## 🚀 Key Features
 
-*   **Modular Architecture**: Plugins are organized by category in `lua/custom/plugins/`.
-*   **Performance Optimized**: Heavy plugins (LSP, Treesitter, Debuggers) are lazy-loaded on file open, insert enter, or command usage.
-*   **Language Support**:
-    *   **Python**: `Pyright` (Type Checking) + `Ruff` (Linting/Formatting) + `venv-selector`.
-    *   **Java**: `nvim-jdtls`.
-    *   **Rust**: `rustaceanvim`.
-*   **Modern UI**: `catppuccin` theme, `neo-tree` file explorer, `bufferline`, and `lualine`.
-*   **Navigation**: `Harpoon` (ThePrimeagen style) and `Flash.nvim` for rapid movement.
+*   **⚡ Blazing Fast**: Lazy-loaded modular architecture using `lazy.nvim`.
+*   **🤖 Dual-AI Layer**:
+    *   **GitHub Copilot**: Real-time inline suggestions.
+    *   **Copilot Chat**: Conversational AI for code review and refactoring.
+    *   **AIRA Integration**: Local, autonomous agent with project-wide search and edit capabilities.
+*   **🐍 Pro Python Support**:
+    *   Optimized `Pyright` to silence "NoneType" and dynamic library noise (GTK, PyQt).
+    *   `Ruff` configured for critical errors only.
+    *   `venv-selector` for seamless environment switching.
+*   **🛠️ Full Toolkit**: Integrated Debugger (DAP), terminal management, and fast navigation (Harpoon/Flash).
 
 ## 📂 Project Structure
 
 ```text
 /home/rati/.config/nvim/
-├── init.lua                # Core setup: Options, Keymaps, LSP/Treesitter bootstrap
+├── init.lua                # Core settings & LSP bootstrap
+├── PLUGINS.md              # Detailed Plugin Handbook & Usage Guide
 ├── lua/
+│   ├── aira.lua            # Local AI Agent bridge
 │   └── custom/
-│       └── plugins/
-│           ├── design.lua      # Theme (Catppuccin), Noice
-│           ├── ui.lua          # Visuals: Neo-tree, Lualine, Bufferline
-│           ├── nav.lua         # Movement: Harpoon, Flash
-│           ├── languages.lua   # Lang-specific: Python (venv), Java, Rust, Linting
-│           ├── debugging.lua   # DAP (Debug Adapter Protocol) setup
-│           ├── editor.lua      # Editing aids: Autopairs, Comments
-│           ├── terminal.lua    # ToggleTerm configuration
-│           └── layout.lua      # Edgy.nvim (window layout management)
+│       └── plugins/        # Categorized plugin configurations
 ```
 
-## 🛠️ Language Server Setup
+## 📥 Quick Setup
 
-### Python
-*   **LSP**: `Pyright` is configured strictly for **Type Checking**.
-*   **Linter/Formatter**: `Ruff` handles linting (unused imports, style violations) and formatting.
-    *   *Note*: Pyright's `reportUnusedImport` and `reportUnusedVariable` are disabled to avoid conflicts with Ruff.
-*   **Virtual Envs**: `venv-selector` (loads on opening `.py` files) lets you pick your python environment via `<leader>v`.
+1.  **Dependencies**: Install `git`, `gcc`, `ripgrep`, `fd`, and `lazygit`.
+2.  **Copilot**: Run `:Copilot setup` after launch.
+3.  **AIRA**: Ensure `~/AIRA` is installed for local agent features.
 
-### Java & Rust
-*   **Java**: Uses `nvim-jdtls` (loads on opening `.java` files).
-*   **Rust**: Uses `rustaceanvim` (loads on opening `.rs` files).
+## ⌨️ Essential Keymaps
 
-## ⌨️ Custom Keymaps
+| Key | Action |
+| :--- | :--- |
+| `<Space>` | **Leader Key** |
+| `<leader>e` | Toggle File Explorer (Neo-tree) |
+| `<leader>sf` | Search Files (Telescope) |
+| `s` | Jump to anything (Flash) |
+| `Alt + l` | Accept AI Completion (Copilot) |
+| `<leader>ac` | Toggle Copilot Chat |
+| `:AiraChat` | Open Local Agent Sidebar |
+| `<leader>gg` | Open LazyGit |
+| `<F5>` | Start Debugger |
 
-### General
-*   `<Space>`: Leader Key
-
-### Navigation (Harpoon)
-*   `<leader>a`: Add file to Harpoon
-*   `<C-e>`: Toggle Harpoon menu
-*   `<leader>1-4`: Navigate to Harpoon file 1-4
-
-### File Explorer (Neo-tree)
-*   `<leader>e`: Toggle File Explorer
-
-### Terminal (ToggleTerm)
-*   `<C-\>`: Toggle Terminal (Floating/Docked)
-*   `<leader>tt`: Toggle Default Terminal
-*   `<leader>t1/t2/t3`: Toggle specific terminal instances
-
-### Debugging (DAP)
-*   `<F5>`: Start/Continue
-*   `<F1>`: Step Into
-*   `<F2>`: Step Over
-*   `<F3>`: Step Out
-*   `<leader>b`: Toggle Breakpoint
-
-### Git (LazyGit)
-*   `<leader>gg`: Open LazyGit
-
-### Session Management
-*   `<leader>qs`: Restore Session
-*   `<leader>ql`: Restore Last Session
-
-### Code Manipulation (TreesJ)
-*   `<leader>m`: Toggle Split/Join
-*   `<leader>j`: Join Block
-*   `<leader>s`: Split Block
-
-## ⚡ Performance Notes
-
-Most plugins are configured with `event`, `ft`, or `keys` triggers.
-*   **LSP/Treesitter**: Loads on `BufReadPre` (when you actually open a file).
-*   **Completion (Blink)**: Loads on `InsertEnter`.
-*   **Debugger**: Loads only when you press a debug key (e.g., `<F5>`).
-
-This ensures Neovim starts up almost instantly and only consumes RAM for the tools you are currently using.
+---
+*Refer to [PLUGINS.md](./PLUGINS.md) for the full handbook.*

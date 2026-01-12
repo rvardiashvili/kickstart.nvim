@@ -381,6 +381,9 @@ require('lazy').setup({
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+
+      -- Fix: Telescope preview requires treesitter to be loaded for syntax highlighting
+      'nvim-treesitter/nvim-treesitter',
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -678,9 +681,22 @@ require('lazy').setup({
           settings = {
             python = {
               analysis = {
+                typeCheckingMode = 'basic',
                 -- Disable these reports as Ruff handles them
                 reportUnusedImport = 'none',
                 reportUnusedVariable = 'none',
+                -- Reduce false positives for dynamic libraries
+                reportGeneralTypeIssues = 'none',
+                reportOptionalMemberAccess = 'none',
+                reportAttributeAccessIssue = 'none',
+                -- Suppress missing import errors (e.g. GTK, Glib)
+                reportMissingModuleSource = 'none',
+                reportMissingImports = 'none',
+                -- Suppress NoneType and general assignment issues
+                reportAssignmentType = 'none',
+                reportReturnType = 'none',
+                reportArgumentType = 'none',
+                reportCallIssue = 'none',
               },
             },
           },
@@ -688,7 +704,11 @@ require('lazy').setup({
         ruff = {
           init_options = {
             settings = {
-              args = { '--ignore=E701,E722,BLE001' },
+              -- Only select critical errors:
+              -- F: Pyflakes (logical errors, undefined names)
+              -- E9: Syntax errors
+              -- E1: Indentation errors
+              args = { '--select=F,E9,E1', '--ignore=E501,E402,E722,E701' },
             },
           },
         },
@@ -1051,6 +1071,9 @@ require('lazy').setup({
     },
   },
 })
+
+-- Load AIRA integration
+-- require('aira')
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
