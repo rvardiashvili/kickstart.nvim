@@ -1,6 +1,7 @@
 return {
   {
     'akinsho/bufferline.nvim',
+    event = 'VeryLazy',
     dependencies = 'nvim-tree/nvim-web-devicons',
     opts = {
       options = {
@@ -17,6 +18,10 @@ return {
   {
     'nvim-neo-tree/neo-tree.nvim',
     branch = 'v3.x',
+    cmd = 'Neotree',
+    keys = {
+      { '<leader>e', ':Neotree toggle<CR>', desc = 'Toggle file tree' },
+    },
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-tree/nvim-web-devicons',
@@ -24,11 +29,11 @@ return {
     },
     config = function()
       require('neo-tree').setup {}
-      vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { desc = 'Toggle file tree' })
     end,
   },
   {
     'nvim-lualine/lualine.nvim',
+    event = 'VeryLazy',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require('lualine').setup()
