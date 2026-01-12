@@ -91,5 +91,5 @@ This ensures Neovim starts up almost instantly and only consumes RAM for the too
 
 ## Install
 ```sh
-git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+git clone https://github.com/rvardiashvili/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 ```
