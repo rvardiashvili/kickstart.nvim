@@ -665,6 +665,16 @@ require('lazy').setup({
       --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
       local capabilities = require('blink.cmp').get_lsp_capabilities()
 
+      -- Globally disable diagnostics from pyright to avoid any "type mismatch" noise
+      local original_publish_diagnostics = vim.lsp.handlers['textDocument/publishDiagnostics']
+      vim.lsp.handlers['textDocument/publishDiagnostics'] = function(err, result, ctx, config)
+        local client = vim.lsp.get_client_by_id(ctx.client_id)
+        if client and client.name == 'pyright' then
+          return
+        end
+        original_publish_diagnostics(err, result, ctx, config)
+      end
+
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       --
@@ -681,35 +691,30 @@ require('lazy').setup({
           settings = {
             python = {
               analysis = {
-                typeCheckingMode = 'basic',
-                -- Disable these reports as Ruff handles them
-                reportUnusedImport = 'none',
-                reportUnusedVariable = 'none',
-                -- Reduce false positives for dynamic libraries
-                reportGeneralTypeIssues = 'none',
-                reportOptionalMemberAccess = 'none',
-                reportAttributeAccessIssue = 'none',
-                -- Suppress missing import errors (e.g. GTK, Glib)
-                reportMissingModuleSource = 'none',
-                reportMissingImports = 'none',
-                -- Suppress NoneType and general assignment issues
-                reportAssignmentType = 'none',
-                reportReturnType = 'none',
-                reportArgumentType = 'none',
-                reportCallIssue = 'none',
+                typeCheckingMode = 'off',
+                diagnosticMode = 'openFilesOnly',
               },
             },
           },
+          handlers = {
+            ['textDocument/publishDiagnostics'] = function() end,
+          },
+          on_attach = function(client, _)
+            client.server_capabilities.diagnosticProvider = false
+          end,
         },
         ruff = {
+          cmd = { 'ruff', 'server', '--config', 'lint.ignore = ["E701", "E722", "E501", "E402"]', '--config', 'lint.select = ["E9", "F821", "F401", "F841"]' },
           init_options = {
-            settings = {
-              -- Only select critical errors:
-              -- F: Pyflakes (logical errors, undefined names)
-              -- E9: Syntax errors
-              -- E1: Indentation errors
-              args = { '--select=F,E9,E1', '--ignore=E501,E402,E722,E701' },
+            configuration = {
+              lint = {
+                select = { 'E9', 'F821', 'F401', 'F841' },
+                ignore = { 'E701', 'E722', 'E501', 'E402' },
+              },
             },
+          },
+          settings = {
+            hover = { enabled = false },
           },
         },
         -- rust_analyzer = {},
