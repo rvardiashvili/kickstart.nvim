@@ -87,4 +87,9 @@ Most plugins are configured with `event`, `ft`, or `keys` triggers.
 *   **Completion (Blink)**: Loads on `InsertEnter`.
 *   **Debugger**: Loads only when you press a debug key (e.g., `<F5>`).
 
-This ensures Neovim starts up almost instantly and only consumes RAM for the tools you are currently using.
+This ensures Neovim starts up almost instantly and only consumes RAM for the tools you are currently using.   
+
+## Install
+```sh
+git clone https://github.com/nvim-lua/kickstart.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+```
